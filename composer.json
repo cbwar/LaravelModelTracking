@@ -1,0 +1,16 @@
+{
+  "name": "cbwar/laravel-modeltracking",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Raphael Lisch",
+      "email": "raphael.lisch@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Cbwar\\Laravel\\ModelTracking\\": "src"
+    }
+  },
+  "require": {}
+}
