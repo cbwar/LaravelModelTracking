@@ -62,7 +62,7 @@ class TrackedModelObserver
 
                 if ($column_type === 'string' || $column_type === 'text') {
                     $value = Str::limit($value, 40);
-                    $new_value = Str::limit($value, 40);
+                    $new_value = Str::limit($new_value, 40);
                 }
 
                 $string .= sprintf("%s : %s => %s\n", $key, $value, $new_value);
