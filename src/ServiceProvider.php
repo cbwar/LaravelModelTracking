@@ -16,6 +16,10 @@ class ServiceProvider extends Provider
     public function boot()
     {
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+
+        $this->publishes([
+            __DIR__ . '/../config/modeltracking.php' => config_path('modeltracking.php'),
+        ]);
     }
 
 }

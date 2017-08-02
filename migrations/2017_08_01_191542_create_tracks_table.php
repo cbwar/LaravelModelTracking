@@ -15,8 +15,9 @@ class CreateTracksTable extends Migration
     {
         Schema::create('tracks', function (Blueprint $blueprint) {
             $blueprint->increments('id')->unsigned();
-            $blueprint->string('ref_table', 255);
+            $blueprint->string('ref_model', 255);
             $blueprint->integer('ref_id')->unsigned();
+            $blueprint->integer('user_id')->unsigned()->nullable();
             $blueprint->enum('type', ['add', 'edit', 'delete']);
             $blueprint->longText('description');
             $blueprint->timestamps();
