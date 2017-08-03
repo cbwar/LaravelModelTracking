@@ -22,9 +22,7 @@ class ServiceProvider extends Provider
         $this->loadTranslationsFrom(__DIR__ . '/resources/lang', 'modelchanges');
 
         // Config
-        $this->publishes([
-            __DIR__ . '/config/modelchanges.php' => config_path('modelchanges.php'),
-        ]);
+        $this->publishes([__DIR__ . '/config/modelchanges.php' => config_path('modelchanges.php')], 'config');
     }
 
 }
