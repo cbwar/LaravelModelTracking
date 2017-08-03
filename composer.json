@@ -1,5 +1,6 @@
 {
   "name": "cbwar/laravel-modelchanges",
+  "description": "Model changes tracking for Laravel",
   "type": "library",
   "authors": [
     {
@@ -12,5 +13,6 @@
       "Cbwar\\Laravel\\ModelChanges\\": "src"
     }
   },
+  "minimum-stability": "dev",
   "require": {}
 }
