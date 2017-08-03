@@ -65,7 +65,7 @@ class TrackedModelObserver
                     $new_value = Str::limit($new_value, 40);
                 }
 
-                $string .= sprintf("%s : %s => %s\n", $key, $value, $new_value);
+                $string .= sprintf("%s : %s => %s\n", $key, htmlentities($value), htmlentities($new_value));
             }
         }
         return $string;
