@@ -1,19 +1,19 @@
-# LaravelModelTracking
+# Laravel Model Changes
 
-Track model changes made by users into database.
+Track models changes made by users.
 
 ## Installation
 
 1. Install with composer :
 
 ```
-composer require cbwar/laravel-modeltracking
+composer require cbwar/laravel-modelchanges
 ```
 
 2. Open ```config/app.php``` and add the following to the ```providers``` array :
 
 ```
-Cbwar\Laravel\ModelTracking\ServiceProvider::class,
+Cbwar\Laravel\ModelChanges\ServiceProvider::class,
 ```
 
 
@@ -31,15 +31,19 @@ namespace App;
 
 use Cbwar\Laravel\ModelTracking\Models\TrackedModel;
 
-class Project extends TrackedModel
+class Article extends TrackedModel
 {
-    protected $guarded = [];
+    protected $fillable = ['title', 'content', 'categorie_id', 'image', 'slug', 'published'];
 
-    public function trackableNameField()
-    {
-        return $this->attributes['title'];
-    }
+    protected $sentences = [
+        'add' => 'L\'article a été ajouté.',
+        'edit' => 'L\'article a été modifié.',
+        'delete' => 'L\'article a été supprimé.',
+    ];
 
+    protected $tracked = ['title', 'content', 'published', 'categorie_id'];
+
+    [...]
 }
 
 ```
