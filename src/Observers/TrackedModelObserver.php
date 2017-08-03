@@ -1,23 +1,17 @@
 <?php
 
+namespace Cbwar\Laravel\ModelChanges\Observers;
 
-namespace Cbwar\Laravel\ModelTracking\Observers;
-
-
-use Cbwar\Laravel\ModelTracking\Models\Track;
-use Cbwar\Laravel\ModelTracking\Models\TrackedModel;
+use Cbwar\Laravel\BoilerplateChangesTracking\Menu\Tracks;
+use Cbwar\Laravel\ModelChanges\Errors\TrackableError;
+use Cbwar\Laravel\ModelChanges\Models\Change;
+use Cbwar\Laravel\ModelChanges\Models\TrackedModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class TrackedModelObserver
 {
-
-    private static $typeVerbs = [
-        'add' => 'added',
-        'edit' => 'updated',
-        'delete' => 'deleted'
-    ];
 
     /**
      * @param TrackedModel $model
@@ -29,7 +23,7 @@ class TrackedModelObserver
         $sentence = self::getSentence($model, $type);
 
         if ($sentence) {
-            $t = new Track();
+            $t = new Change();
             $t->ref_model = get_class($model);
             $t->ref_id = $model->id;
             $t->ref_title = $model->trackedTitleField();
@@ -94,17 +88,17 @@ class TrackedModelObserver
      */
     private function getSentence(TrackedModel $model, $type)
     {
-        if (isset($model->trackedSentences()[$type])) {
-            $sentence = $model->trackedSentences()[$type];
-        } else {
-            $sentence = sprintf("The item was %s", static::$typeVerbs[$type]);
+        $sentences = array_merge(TrackedModel::$tracking_sentences_default, $model->getSentences());
+
+        if (!isset($sentences[$type])) {
+            throw new TrackableError('no sentence defined for type ' . $type);
         }
 
+        $sentence = $sentences[$type];
         if ($type === 'edit' && $this->isModified($model)) {
             // Show diff
             $sentence .= '<div>' . $this->modelDiff($model) . '</div>';
         }
-
         return $sentence;
     }
 

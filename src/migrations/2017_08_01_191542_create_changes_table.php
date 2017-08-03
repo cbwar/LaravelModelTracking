@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTracksTable extends Migration
+class CreateChangesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateTracksTable extends Migration
      */
     public function up()
     {
-        Schema::create('tracks', function (Blueprint $blueprint) {
+        Schema::create('changes', function (Blueprint $blueprint) {
             $blueprint->increments('id')->unsigned();
             $blueprint->string('ref_model', 255);
+            $blueprint->string('ref_title', 255);
             $blueprint->integer('ref_id')->unsigned();
             $blueprint->integer('user_id')->unsigned()->nullable();
             $blueprint->enum('type', ['add', 'edit', 'delete']);
@@ -31,6 +32,6 @@ class CreateTracksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tracks');
+        Schema::dropIfExists('changes');
     }
 }

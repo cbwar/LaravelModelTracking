@@ -1,6 +1,6 @@
 <?php
 
-namespace Cbwar\Laravel\ModelTracking\Traits;
+namespace Cbwar\Laravel\ModelChanges\Traits;
 
 trait TrackableFields
 {
@@ -10,6 +10,12 @@ trait TrackableFields
      * @var array
      */
     protected $tracked = ['*'];
+
+    /**
+     * Custom sentences
+     * @var array
+     */
+    protected $sentences = [];
 
 
     /**
@@ -31,5 +37,17 @@ trait TrackableFields
     {
         return in_array($key, $this->getTracked()) || $this->getTracked() == ['*'];
     }
+
+    /**
+     * Get sentences
+     *
+     * @return array
+     */
+    public function getSentences()
+    {
+        return $this->sentences;
+    }
+
+
 
 }

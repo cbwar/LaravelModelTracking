@@ -1,23 +1,36 @@
 <?php
 
 
-namespace Cbwar\Laravel\ModelTracking\Models;
+namespace Cbwar\Laravel\ModelChanges\Models;
 
-use Cbwar\Laravel\ModelTracking\Errors\TrackableError;
-use Cbwar\Laravel\ModelTracking\Observers\TrackedModelObserver;
-use Cbwar\Laravel\ModelTracking\Traits\TrackableFields;
+use Cbwar\Laravel\ModelChanges\Errors\TrackableError;
+use Cbwar\Laravel\ModelChanges\Observers\TrackedModelObserver;
+use Cbwar\Laravel\ModelChanges\Traits\TrackableFields;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class TrackedModel extends Model
 {
     use TrackableFields;
 
+    /**
+     * Registered events
+     * @var array
+     */
     protected $events = [
         'created' => TrackedModelObserver::class,
         'updated' => TrackedModelObserver::class,
         'deleted' => TrackedModelObserver::class,
     ];
 
+    /**
+     * Default sentences for change log
+     * @var array
+     */
+    public static $tracking_sentences_default = [];
+
+    /**
+     *
+     */
     public static function boot()
     {
         parent::boot();
@@ -29,6 +42,12 @@ abstract class TrackedModel extends Model
         static::deleting(function (TrackedModel $model) {
             $model->tracks()->delete();
         });
+
+        static::$tracking_sentences_default = [
+            'add' => __('modelchanges::default.sentences.add'),
+            'edit' => __('modelchanges::default.sentences.edit'),
+            'delete' => __('modelchanges::default.sentences.delete'),
+        ];
     }
 
     /**
@@ -44,15 +63,10 @@ abstract class TrackedModel extends Model
     }
 
     /**
-     * @return array
-     */
-    abstract public function trackedSentences();
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function tracks()
     {
-        return $this->morphMany(Track::class, null, 'ref_model', 'ref_id');
+        return $this->morphMany(Change::class, null, 'ref_model', 'ref_id');
     }
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Cbwar\Laravel\ModelTracking\Models;
+namespace Cbwar\Laravel\ModelChanges\Models;
 
-use Cbwar\Laravel\ModelTracking\Errors\TrackableError;
+use Cbwar\Laravel\ModelChanges\Errors\TrackableError;
 use Illuminate\Database\Eloquent\Model;
 
-class Track extends Model
+class Change extends Model
 {
     protected $guarded = [];
 
@@ -14,7 +14,7 @@ class Track extends Model
     {
         if ($method === 'user') {
 
-            if (($className = config('modeltracking.user_class')) !== null) {
+            if (($className = config('modelchanges.user_class')) !== null) {
                 return self::hasOne($className, 'id', 'user_id');
             }
             throw new TrackableError('user_class key not defined in config');

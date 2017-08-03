@@ -1,5 +1,5 @@
 {
-  "name": "cbwar/laravel-modeltracking",
+  "name": "cbwar/laravel-modelchanges",
   "type": "library",
   "authors": [
     {
@@ -9,7 +9,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Cbwar\\Laravel\\ModelTracking\\": "src"
+      "Cbwar\\Laravel\\ModelChanges\\": "src"
     }
   },
   "require": {}

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cbwar\Laravel\ModelTracking;
+namespace Cbwar\Laravel\ModelChanges;
 
 use Illuminate\Support\ServiceProvider as Provider;
 
@@ -15,10 +15,15 @@ class ServiceProvider extends Provider
 
     public function boot()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
+        // Migrations
+        $this->loadMigrationsFrom(__DIR__ . '/migrations');
 
+        // Translations
+        $this->loadTranslationsFrom(__DIR__ . '/resources/lang', 'modelchanges');
+
+        // Config
         $this->publishes([
-            __DIR__ . '/../config/modeltracking.php' => config_path('modeltracking.php'),
+            __DIR__ . '/config/modelchanges.php' => config_path('modelchanges.php'),
         ]);
     }
 
