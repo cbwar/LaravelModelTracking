@@ -13,6 +13,7 @@
       "Cbwar\\Laravel\\ModelChanges\\": "src"
     }
   },
-  "minimum-stability": "dev",
-  "require": {}
+  "require": {
+    "adaptive/php-text-difference": "^1.0"
+  }
 }

@@ -2,7 +2,9 @@
 
 namespace Cbwar\Laravel\ModelChanges\Observers;
 
-use Cbwar\Laravel\BoilerplateChangesTracking\Menu\Tracks;
+use Adaptive\Diff\Diff;
+use Adaptive\Diff\Renderer\Html\Inline;
+use Adaptive\Diff\Renderer\Html\SideBySide;
 use Cbwar\Laravel\ModelChanges\Errors\TrackableError;
 use Cbwar\Laravel\ModelChanges\Models\Change;
 use Cbwar\Laravel\ModelChanges\Models\TrackedModel;
@@ -55,11 +57,16 @@ class TrackedModelObserver
                 $column_type = Schema::getColumnType($model->getTable(), $key);
 
                 if ($column_type === 'string' || $column_type === 'text') {
-                    $value = Str::limit($value, 40);
-                    $new_value = Str::limit($new_value, 40);
+
+                    $diff = new Diff(explode("\n", strip_tags($value)), explode("\n", strip_tags($new_value)), ['ignoreWhitespace' => true,]);
+                    $string .= sprintf("<div class=\"tracks-field\">%s</div><div class=\"tracks-diff\">%s</div>\n", $key, $diff->Render(new SideBySide()));
+
+                } else {
+
+                    $string .= sprintf("<div class=\"tracks-field\">%s</div><div class=\"tracks-diff\">%s => %s</div>\n", $key, $value, $new_value);
+
                 }
 
-                $string .= sprintf("%s : %s => %s\n", $key, htmlentities($value), htmlentities($new_value));
             }
         }
         return $string;
