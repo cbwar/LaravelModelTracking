@@ -14,6 +14,6 @@
     }
   },
   "require": {
-    "adaptive/php-text-difference": "^1.0"
+    "cbwar/php-text-difference": "^1.0"
   }
 }
