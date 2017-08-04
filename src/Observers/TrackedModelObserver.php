@@ -59,7 +59,10 @@ class TrackedModelObserver
                 if ($column_type === 'string' || $column_type === 'text') {
 
                     $diff = new Diff(explode("\n", strip_tags($value)), explode("\n", strip_tags($new_value)), ['ignoreWhitespace' => true,]);
-                    $string .= sprintf("<div class=\"tracks-field\">%s</div><div class=\"tracks-diff\">%s</div>\n", $key, $diff->Render(new SideBySide()));
+                    $string .= sprintf("<div class=\"tracks-field\">%s</div><div class=\"tracks-diff\">%s</div>\n",
+                        $key,
+                        $diff->Render(new SideBySide(['showEquals' => false]))
+                    );
 
                 } else {
 
