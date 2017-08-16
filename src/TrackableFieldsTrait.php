@@ -1,8 +1,8 @@
 <?php
 
-namespace Cbwar\Laravel\ModelChanges\Traits;
+namespace Cbwar\Laravel\ModelChanges;
 
-trait TrackableFields
+trait TrackableFieldsTrait
 {
 
     /**

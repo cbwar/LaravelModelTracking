@@ -7,6 +7,16 @@ use Illuminate\Support\ServiceProvider as Provider;
 class ServiceProvider extends Provider
 {
 
+    private function basePath()
+    {
+        return __DIR__ . '/..';
+    }
+
+    private function configPath()
+    {
+        return $this->basePath() . '/config/modelchanges.php';
+    }
+
     public function register()
     {
 
@@ -16,13 +26,13 @@ class ServiceProvider extends Provider
     public function boot()
     {
         // Migrations
-        $this->loadMigrationsFrom(__DIR__ . '/migrations');
+        $this->loadMigrationsFrom($this->basePath() . '/migrations');
 
         // Translations
-        $this->loadTranslationsFrom(__DIR__ . '/resources/lang', 'modelchanges');
+        $this->loadTranslationsFrom($this->basePath() . '/resources/lang', 'modelchanges');
 
         // Config
-        $this->publishes([__DIR__ . '/config/modelchanges.php' => config_path('modelchanges.php')], 'config');
+        $this->publishes([$this->configPath() => config_path('modelchanges.php')], 'config');
     }
 
 }
