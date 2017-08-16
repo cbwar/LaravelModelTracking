@@ -134,7 +134,10 @@ class TrackedModelObserver
      */
     public function deleted(TrackedModel $model)
     {
-        if (method_exists($model, 'isForceDeleting') && false === $model->isForceDeleting()) {
+        if (method_exists($model, 'isForceDeleting')
+            && false === $model->isForceDeleting()
+            || config('modelchanges.keep_deleted_items_changes') === true
+        ) {
             // Soft delete
             $this->addFromTrackedModel($model, 'delete');
         }

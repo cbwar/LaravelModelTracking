@@ -37,6 +37,11 @@ abstract class TrackedModel extends Model
 
         // Remove tracks
         static::deleting(function (TrackedModel $model) {
+
+            if (config('modelchanges.keep_deleted_items_changes') === true) {
+                return;
+            }
+
             if (!method_exists($model, 'isForceDeleting') || true === $model->isForceDeleting()) {
                 $model->tracks()->delete();
             }

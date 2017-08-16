@@ -26,6 +26,7 @@ class TrackingChangesTest extends TestCase
             'database' => ':memory:',
             'prefix' => '',
         ]);
+        $app['config']['modelchanges'] = require __DIR__ . '/../config/modelchanges.php';
     }
 
 
@@ -152,6 +153,23 @@ class TrackingChangesTest extends TestCase
 
         $changes = Change::all();
         $this->assertCount(0, $changes);
+    }
+
+    /**
+     * @test
+     */
+    public function it_must_keep_rows_on_deletion_into_change_table()
+    {
+        $this->app['config']->set('modelchanges.keep_deleted_items_changes', true);
+
+        $data = Data::create(['tracked1' => 'coucou', 'tracked2' => 2]);
+        $data->tracked1 = 'hello';
+        $data->save();
+        $data->delete();
+
+
+        $changes = Change::all();
+        $this->assertCount(3, $changes);
     }
 
     /**
