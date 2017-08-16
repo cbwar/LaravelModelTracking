@@ -26,7 +26,7 @@ class ServiceProvider extends Provider
     public function boot()
     {
         // Migrations
-        $this->loadMigrationsFrom($this->basePath() . '/migrations');
+        $this->loadMigrationsFrom($this->basePath() . '/database/migrations');
 
         // Translations
         $this->loadTranslationsFrom($this->basePath() . '/resources/lang', 'modelchanges');
