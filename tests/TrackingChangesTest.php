@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use Cbwar\Laravel\ModelChanges\Change;
+use Cbwar\Laravel\ModelChanges\Models\Change;
 use Cbwar\Laravel\ModelChanges\ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Schema\Blueprint;

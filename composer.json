@@ -19,7 +19,7 @@
     "cbwar/php-text-difference": "^1.0",
     "illuminate/support": "5.3.* || 5.4.*",
     "illuminate/database": "5.4.*",
-    "doctrine/dbal": "^2.6"
+    "doctrine/dbal": "^2.5"
   },
   "require-dev": {
     "phpunit/phpunit": "^5.2",
