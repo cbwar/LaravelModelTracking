@@ -1,16 +1,14 @@
 <?php
 
 
-namespace Cbwar\Laravel\ModelChanges\Models;
+namespace Cbwar\Laravel\ModelChanges;
 
-use Cbwar\Laravel\ModelChanges\Errors\TrackableError;
-use Cbwar\Laravel\ModelChanges\Observers\TrackedModelObserver;
-use Cbwar\Laravel\ModelChanges\Traits\TrackableFields;
+use Cbwar\Laravel\ModelChanges\Models\Change;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class TrackedModel extends Model
 {
-    use TrackableFields;
+    use TrackableFieldsTrait;
 
     /**
      * Registered events
@@ -40,7 +38,14 @@ abstract class TrackedModel extends Model
 
         // Remove tracks
         static::deleting(function (TrackedModel $model) {
-            $model->tracks()->delete();
+
+            if (config('modelchanges.keep_deleted_items_changes') === true) {
+                return;
+            }
+
+            if (!method_exists($model, 'isForceDeleting') || true === $model->isForceDeleting()) {
+                $model->tracks()->delete();
+            }
         });
 
         static::$tracking_sentences_default = [

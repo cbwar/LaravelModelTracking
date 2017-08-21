@@ -1,16 +1,12 @@
 <?php
 
-namespace Cbwar\Laravel\ModelChanges\Observers;
+namespace Cbwar\Laravel\ModelChanges;
 
 use Adaptive\Diff\Diff;
-use Adaptive\Diff\Renderer\Html\Inline;
 use Adaptive\Diff\Renderer\Html\SideBySide;
-use Cbwar\Laravel\ModelChanges\Errors\TrackableError;
 use Cbwar\Laravel\ModelChanges\Models\Change;
-use Cbwar\Laravel\ModelChanges\Models\TrackedModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
 
 class TrackedModelObserver
 {
@@ -139,9 +135,10 @@ class TrackedModelObserver
      */
     public function deleted(TrackedModel $model)
     {
-        $reflexion = new \ReflectionClass($model);
-
-        if ($reflexion->hasMethod('restore') && $model->forceDeleting === false) {
+        if (method_exists($model, 'isForceDeleting')
+            && false === $model->isForceDeleting()
+            || config('modelchanges.keep_deleted_items_changes') === true
+        ) {
             // Soft delete
             $this->addFromTrackedModel($model, 'delete');
         }

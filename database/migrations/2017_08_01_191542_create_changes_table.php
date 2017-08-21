@@ -14,11 +14,11 @@ class CreateChangesTable extends Migration
     public function up()
     {
         Schema::create('changes', function (Blueprint $blueprint) {
-            $blueprint->increments('id')->unsigned();
+            $blueprint->increments('id');
             $blueprint->string('ref_model', 255);
             $blueprint->string('ref_title', 255);
-            $blueprint->integer('ref_id')->unsigned();
-            $blueprint->integer('user_id')->unsigned()->nullable();
+            $blueprint->integer('ref_id', false, true);
+            $blueprint->integer('user_id',false, true)->nullable();
             $blueprint->enum('type', ['add', 'edit', 'delete']);
             $blueprint->longText('description');
             $blueprint->timestamps();

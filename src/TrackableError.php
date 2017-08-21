@@ -1,6 +1,6 @@
 <?php
 
-namespace Cbwar\Laravel\ModelChanges\Errors;
+namespace Cbwar\Laravel\ModelChanges;
 
 class TrackableError extends \Exception
 {
