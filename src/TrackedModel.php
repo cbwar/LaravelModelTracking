@@ -3,6 +3,7 @@
 
 namespace Cbwar\Laravel\ModelChanges;
 
+use Cbwar\Laravel\ModelChanges\Models\Change;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class TrackedModel extends Model

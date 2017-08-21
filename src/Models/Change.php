@@ -1,7 +1,8 @@
 <?php
 
-namespace Cbwar\Laravel\ModelChanges;
+namespace Cbwar\Laravel\ModelChanges\Models;
 
+use Cbwar\Laravel\ModelChanges\TrackableError;
 use Illuminate\Database\Eloquent\Model;
 
 /**

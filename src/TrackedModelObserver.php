@@ -4,6 +4,7 @@ namespace Cbwar\Laravel\ModelChanges;
 
 use Adaptive\Diff\Diff;
 use Adaptive\Diff\Renderer\Html\SideBySide;
+use Cbwar\Laravel\ModelChanges\Models\Change;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
 
