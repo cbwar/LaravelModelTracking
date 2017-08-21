@@ -29,7 +29,7 @@ php artisan migrate
 
 namespace App;
 
-use Cbwar\Laravel\ModelTracking\Models\TrackedModel;
+use Cbwar\Laravel\ModelTracking\TrackedModel;
 
 class Article extends TrackedModel
 {
@@ -47,3 +47,6 @@ class Article extends TrackedModel
 }
 
 ```
+
+## TODO
+- Add restore change type (soft delete)
