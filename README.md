@@ -1,6 +1,8 @@
 # Laravel Model Changes
 
-Track models changes made by users and save them to a log table.
+[![Build Status](https://travis-ci.org/cbwar/laravel-modelchanges.svg?branch=master)](https://travis-ci.org/cbwar/laravel-modelchanges)
+
+Track models changes made by users and save them to a table in database.
 
 ## Installation
 
