@@ -1,15 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateChangesTable extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up()
     {
@@ -18,7 +16,7 @@ class CreateChangesTable extends Migration
             $blueprint->string('ref_model', 255);
             $blueprint->string('ref_title', 255);
             $blueprint->integer('ref_id', false, true);
-            $blueprint->integer('user_id',false, true)->nullable();
+            $blueprint->integer('user_id', false, true)->nullable();
             $blueprint->enum('type', ['add', 'edit', 'delete']);
             $blueprint->longText('description');
             $blueprint->timestamps();
@@ -27,8 +25,6 @@ class CreateChangesTable extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down()
     {

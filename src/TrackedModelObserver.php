@@ -10,10 +10,9 @@ use Illuminate\Support\Facades\Schema;
 
 class TrackedModelObserver
 {
-
     /**
      * @param TrackedModel $model
-     * @param string $type
+     * @param string       $type
      */
     private function addFromTrackedModel(TrackedModel $model, $type)
     {
@@ -35,8 +34,8 @@ class TrackedModelObserver
     }
 
     /**
-     * @param array $old Old values
-     * @param array $new New values
+     * @param array $old    Old values
+     * @param array $new    New values
      * @param array $fields Tracked fields
      */
     private function modelDiff(TrackedModel $model)
@@ -49,47 +48,54 @@ class TrackedModelObserver
         foreach ($old as $key => $value) {
             $new_value = $new[$key];
 
-            if ($value != $new_value && in_array($key, $tracked)) {
+            if ($value !== $new_value && in_array($key, $tracked, true)) {
                 $column_type = Schema::getColumnType($model->getTable(), $key);
 
                 if ($column_type === 'string' || $column_type === 'text') {
-
-                    $diff = new Diff(explode("\n", strip_tags($value)), explode("\n", strip_tags($new_value)), ['ignoreWhitespace' => true,]);
-                    $string .= sprintf("<div class=\"tracks-field\">%s</div><div class=\"tracks-diff\">%s</div>\n",
+                    $diff = new Diff(
+                        explode("\n", strip_tags($value)),
+                        explode("\n", strip_tags($new_value)),
+                        ['ignoreWhitespace' => true]
+                    );
+                    $string .= sprintf(
+                        "<div class=\"tracks-field\">%s</div><div class=\"tracks-diff\">%s</div>\n",
                         $key,
                         $diff->Render(new SideBySide(['showEquals' => false]))
                     );
-
                 } else {
-
-                    $string .= sprintf("<div class=\"tracks-field\">%s</div><div class=\"tracks-diff\">%s => %s</div>\n", $key, $value, $new_value);
-
+                    $string .= sprintf('<div class="tracks-field">%s</div>', $key);
+                    $string .= sprintf("<div class=\"tracks-diff\">%s => %s</div>\n", $value, $new_value);
                 }
-
             }
         }
+
         return $string;
     }
 
     /**
-     * Check if tracked field is modified
+     * Check if tracked field is modified.
+     *
      * @param TrackedModel $model
+     *
      * @return bool
      */
     private function isModified(TrackedModel $model)
     {
         foreach ($model->getTracked() as $field) {
-            if ($model->getOriginal($field) != $model->getAttribute($field)) {
+            if ($model->getOriginal($field) !== $model->getAttribute($field)) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
-     * Get sentence for description
+     * Get sentence for description.
+     *
      * @param TrackedModel $model
-     * @param string $type
+     * @param string       $type
+     *
      * @return string
      */
     private function getSentence(TrackedModel $model, $type)
@@ -105,11 +111,13 @@ class TrackedModelObserver
             // Show diff
             $sentence .= '<div>' . $this->modelDiff($model) . '</div>';
         }
+
         return $sentence;
     }
 
     /**
-     * Create model event
+     * Create model event.
+     *
      * @param TrackedModel $model
      */
     public function created(TrackedModel $model)
@@ -117,9 +125,9 @@ class TrackedModelObserver
         $this->addFromTrackedModel($model, 'add');
     }
 
-
     /**
-     * Edit model event
+     * Edit model event.
+     *
      * @param TrackedModel $model
      */
     public function updated(TrackedModel $model)
@@ -130,7 +138,8 @@ class TrackedModelObserver
     }
 
     /**
-     * Delete model event
+     * Delete model event.
+     *
      * @param TrackedModel $model
      */
     public function deleted(TrackedModel $model)
@@ -143,6 +152,4 @@ class TrackedModelObserver
             $this->addFromTrackedModel($model, 'delete');
         }
     }
-
-
 }

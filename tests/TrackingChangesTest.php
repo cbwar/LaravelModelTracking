@@ -11,30 +11,25 @@ use Orchestra\Testbench\TestCase;
 use Tests\Stubs\Data;
 use Tests\Stubs\DataSoft;
 
-
 class TrackingChangesTest extends TestCase
 {
-
-    private $tablename = "data";
-
+    private $tablename = 'data';
 
     protected function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver' => 'sqlite',
+            'driver'   => 'sqlite',
             'database' => ':memory:',
-            'prefix' => '',
+            'prefix'   => '',
         ]);
         $app['config']['modelchanges'] = require __DIR__ . '/../config/modelchanges.php';
     }
-
 
     protected function getPackageProviders($app)
     {
         return [ServiceProvider::class];
     }
-
 
     protected function setUp()
     {
@@ -66,7 +61,6 @@ class TrackingChangesTest extends TestCase
         parent::tearDown();
     }
 
-
     /**
      * @test
      */
@@ -77,10 +71,10 @@ class TrackingChangesTest extends TestCase
         $this->assertCount(1, $changes);
         /** @var Change $insert */
         $insert = $changes[0];
-        $this->assertEquals('add', $insert->type);
-        $this->assertEquals('coucou', $insert->ref_title);
-        $this->assertEquals($data->id, $insert->ref_id);
-        $this->assertEquals(Data::class, $insert->ref_model);
+        $this->assertSame('add', $insert->type);
+        $this->assertSame('coucou', $insert->ref_title);
+        $this->assertSame($data->id, (int) $insert->ref_id);
+        $this->assertSame(Data::class, $insert->ref_model);
         $this->assertNull($insert->user_id);
     }
 
@@ -120,10 +114,10 @@ class TrackingChangesTest extends TestCase
         $this->assertCount(2, $changes);
 
         $update = $changes[1];
-        $this->assertEquals('edit', $update->type);
-        $this->assertEquals('hello', $update->ref_title);
-        $this->assertEquals($data->id, $update->ref_id);
-        $this->assertEquals(Data::class, $update->ref_model);
+        $this->assertSame('edit', $update->type);
+        $this->assertSame('hello', $update->ref_title);
+        $this->assertSame($data->id, (int) $update->ref_id);
+        $this->assertSame(Data::class, $update->ref_model);
         $this->assertNull($update->user_id);
     }
 
@@ -167,7 +161,6 @@ class TrackingChangesTest extends TestCase
         $data->save();
         $data->delete();
 
-
         $changes = Change::all();
         $this->assertCount(3, $changes);
     }
@@ -186,12 +179,10 @@ class TrackingChangesTest extends TestCase
         $this->assertCount(3, $changes);
 
         $delete = $changes[2];
-        $this->assertEquals('delete', $delete->type);
-        $this->assertEquals('hello', $delete->ref_title);
-        $this->assertEquals($data->id, $delete->ref_id);
-        $this->assertEquals(DataSoft::class, $delete->ref_model);
+        $this->assertSame('delete', $delete->type);
+        $this->assertSame('hello', $delete->ref_title);
+        $this->assertSame($data->id, (int) $delete->ref_id);
+        $this->assertSame(DataSoft::class, $delete->ref_model);
         $this->assertNull($delete->user_id);
     }
-
-
 }
