@@ -50,5 +50,11 @@ class Article extends TrackedModel
 
 ```
 
+Then, you can add some view in your project to display the lines, for instance :
+
+![alt text](https://raw.githubusercontent.com/cbwar/laravel-modelchanges/master/readme_images/log_list.jpg)
+
+![alt text](https://raw.githubusercontent.com/cbwar/laravel-modelchanges/master/readme_images/log_details.jpg)
+
 ## TODO
 - Add restore change type (soft delete)
