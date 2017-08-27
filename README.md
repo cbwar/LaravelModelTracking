@@ -1,6 +1,6 @@
 # Laravel Model Changes
 
-Track models changes made by users.
+Track models changes made by users and save them to a log table.
 
 ## Installation
 
@@ -29,7 +29,7 @@ php artisan migrate
 
 namespace App;
 
-use Cbwar\Laravel\ModelTracking\TrackedModel;
+use Cbwar\Laravel\ModelChanges\TrackedModel;
 
 class Article extends TrackedModel
 {

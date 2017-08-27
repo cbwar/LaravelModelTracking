@@ -22,10 +22,13 @@
     "doctrine/dbal": "^2.5"
   },
   "require-dev": {
+    "ext-sqlite3": "*",
     "phpunit/phpunit": "^5.2",
     "orchestra/testbench": "3.4.*",
     "orchestra/database": "3.4.*",
-    "phpunit/php-code-coverage": "^4.0"
+    "phpunit/php-code-coverage": "^4.0",
+    "squizlabs/php_codesniffer": "^3.0",
+    "friendsofphp/php-cs-fixer": "^2.5"
   },
   "scripts": {
     "test": "phpunit"

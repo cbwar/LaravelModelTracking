@@ -6,7 +6,6 @@ use Illuminate\Support\ServiceProvider as Provider;
 
 class ServiceProvider extends Provider
 {
-
     private function basePath()
     {
         return __DIR__ . '/..';
@@ -19,8 +18,6 @@ class ServiceProvider extends Provider
 
     public function register()
     {
-
-
     }
 
     public function boot()
@@ -34,5 +31,4 @@ class ServiceProvider extends Provider
         // Config
         $this->publishes([$this->configPath() => config_path('modelchanges.php')], 'config');
     }
-
 }

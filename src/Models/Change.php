@@ -6,13 +6,11 @@ use Cbwar\Laravel\ModelChanges\TrackableError;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Change model
+ * Change model.
  */
 class Change extends Model
 {
-
     protected $guarded = [];
-
 
     public function __call($method, $parameters)
     {

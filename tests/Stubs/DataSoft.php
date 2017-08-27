@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Tests\Stubs;
-
 
 use Cbwar\Laravel\ModelChanges\TrackedModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -19,5 +17,4 @@ class DataSoft extends TrackedModel
     {
         return $this->attributes['tracked1'];
     }
-
 }

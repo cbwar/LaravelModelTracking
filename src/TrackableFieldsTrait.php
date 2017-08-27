@@ -4,42 +4,44 @@ namespace Cbwar\Laravel\ModelChanges;
 
 trait TrackableFieldsTrait
 {
-
     /**
-     * Tracked fields
+     * Tracked fields.
+     *
      * @var array
      */
     protected $tracked = ['*'];
 
     /**
-     * Custom sentences
+     * Custom sentences.
+     *
      * @var array
      */
     protected $sentences = [];
 
-
     /**
-     * Get tracked fields
+     * Get tracked fields.
+     *
      * @return array
      */
     public function getTracked()
     {
-        return ($this->tracked == ['*']) ? array_keys($this->attributes) : $this->tracked;
+        return ($this->tracked === ['*']) ? array_keys($this->attributes) : $this->tracked;
     }
 
     /**
      * Determine if the given key is tracked.
      *
-     * @param  string $key
+     * @param string $key
+     *
      * @return bool
      */
     public function isTracked($key)
     {
-        return in_array($key, $this->getTracked()) || $this->getTracked() == ['*'];
+        return in_array($key, $this->getTracked(), true) || $this->getTracked() === ['*'];
     }
 
     /**
-     * Get sentences
+     * Get sentences.
      *
      * @return array
      */
@@ -47,7 +49,4 @@ trait TrackableFieldsTrait
     {
         return $this->sentences;
     }
-
-
-
 }
