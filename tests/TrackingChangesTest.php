@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use Carbon\Carbon;
 use Cbwar\Laravel\ModelChanges\Models\Change;
 use Cbwar\Laravel\ModelChanges\ServiceProvider;
 use Illuminate\Database\Eloquent\Model;
@@ -39,6 +40,7 @@ class TrackingChangesTest extends TestCase
         Schema::create($this->tablename, function (Blueprint $table) {
             $table->string('tracked1', 255);
             $table->integer('tracked2', false, true);
+            $table->dateTime('tracked3')->default(Carbon::now());
             $table->string('untracked', 255)->default('');
             $table->timestamps();
         });
@@ -47,6 +49,7 @@ class TrackingChangesTest extends TestCase
         Schema::create($this->tablename . '_softs', function (Blueprint $table) {
             $table->string('tracked1', 255);
             $table->integer('tracked2', false, true);
+            $table->dateTime('tracked3')->default(Carbon::now());
             $table->string('untracked', 255)->default('');
             $table->softDeletes();
             $table->timestamps();
@@ -107,8 +110,10 @@ class TrackingChangesTest extends TestCase
      */
     public function it_must_save_updates_into_change_table()
     {
-        $data = Data::create(['tracked1' => 'coucou', 'tracked2' => 2]);
+        $data = Data::create(['tracked1' => 'coucou', 'tracked2' => 2, 'tracked3' => Carbon::now()]);
         $data->tracked1 = 'hello';
+        $data->tracked2 = '4';
+        $data->tracked3 = Carbon::createFromDate(2014, 5, 5);
         $data->save();
         $changes = Change::all();
         $this->assertCount(2, $changes);
@@ -119,6 +124,10 @@ class TrackingChangesTest extends TestCase
         $this->assertSame($data->id, (int) $update->ref_id);
         $this->assertSame(Data::class, $update->ref_model);
         $this->assertNull($update->user_id);
+
+        $this->assertContains('<div class="tracks-field">tracked1</div>', $update->description);
+        $this->assertContains('<div class="tracks-field">tracked2</div>', $update->description);
+        $this->assertContains('<div class="tracks-field">tracked3</div>', $update->description);
     }
 
     /**
@@ -133,6 +142,33 @@ class TrackingChangesTest extends TestCase
         $data->save();
         $changes = Change::all();
         $this->assertCount(2, $changes);
+    }
+
+    /**
+     * @test
+     */
+    public function it_must_show_changed_fields_in_description()
+    {
+        $data = Data::create(['tracked1' => 'coucou', 'tracked2' => 2]);
+        $data->tracked1 = 'hello';
+        $data->save();
+
+        $description = Change::find(2)->description;
+        $this->assertContains('<div class="tracks-field">tracked1</div>', $description);
+    }
+
+    /**
+     * @test
+     */
+    public function it_must_not_show_unchanged_fields_in_description()
+    {
+        $data = Data::create(['tracked1' => 'coucou', 'tracked2' => 2, 'tracked3' => Carbon::now()]);
+        $data->tracked1 = 'salut';
+        $data->tracked2 = '2';
+        $data->save();
+
+        $description = Change::find(2)->description;
+        $this->assertNotContains('<div class="tracks-field">tracked2</div>', $description);
     }
 
     /**

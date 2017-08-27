@@ -43,12 +43,10 @@ class TrackedModelObserver
         $old = $model->getOriginal();
         $new = $model->getAttributes();
         $tracked = $model->getTracked();
-
         $string = '';
         foreach ($old as $key => $value) {
             $new_value = $new[$key];
-
-            if ($value !== $new_value && in_array($key, $tracked, true)) {
+            if ((string) $value !== (string) $new_value && in_array($key, $tracked, true)) {
                 $column_type = Schema::getColumnType($model->getTable(), $key);
 
                 if ($column_type === 'string' || $column_type === 'text') {
