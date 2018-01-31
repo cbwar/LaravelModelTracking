@@ -12,11 +12,11 @@ trait TrackableFieldsTrait
     protected $tracked = ['*'];
 
     /**
-     * Custom sentences.
+     * Custom event name.
      *
      * @var array
      */
-    protected $sentences = [];
+    protected $eventNames = [];
 
     /**
      * Get tracked fields.
@@ -41,12 +41,12 @@ trait TrackableFieldsTrait
     }
 
     /**
-     * Get sentences.
+     * Get event names.
      *
      * @return array
      */
-    public function getSentences()
+    public function getEventNames()
     {
-        return $this->sentences;
+        return $this->eventNames;
     }
 }

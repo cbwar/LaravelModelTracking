@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'sentences' => [
-        'add' => 'The item has been added',
-        'edit' => 'The item has been modified',
-        'delete' => 'The item has been deleted',
-        'show' => 'The item has been accessed',
-        'archive' => 'The item has been archived',
+    'event_name' => [
+        'add' => 'An item has been added',
+        'edit' => 'An item has been modified',
+        'delete' => 'An item has been deleted',
+        'show' => 'An item has been accessed',
+        'archive' => 'An item has been archived',
     ]
 ];

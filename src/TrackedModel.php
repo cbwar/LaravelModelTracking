@@ -21,11 +21,11 @@ abstract class TrackedModel extends Model
     ];
 
     /**
-     * Default sentences for change log.
+     * Default event names for change log.
      *
      * @var array
      */
-    public static $tracking_sentences_default = [];
+    public static $tracking_event_names_default = [];
 
     public static function boot()
     {
@@ -47,12 +47,12 @@ abstract class TrackedModel extends Model
             }
         });
 
-        static::$tracking_sentences_default = [
-            'add' => __('modelchanges::default.sentences.add'),
-            'edit' => __('modelchanges::default.sentences.edit'),
-            'delete' => __('modelchanges::default.sentences.delete'),
-            'show' => __('modelchanges::default.sentences.show'),
-            'archive' => __('modelchanges::default.sentences.archive'),
+        static::$tracking_event_names_default = [
+            'add' => __('modelchanges::default.event_name.add'),
+            'edit' => __('modelchanges::default.event_name.edit'),
+            'delete' => __('modelchanges::default.event_name.delete'),
+            'show' => __('modelchanges::default.event_name.show'),
+            'archive' => __('modelchanges::default.event_name.archive'),
         ];
     }
 
@@ -107,8 +107,8 @@ abstract class TrackedModel extends Model
         if ($description !== '') {
             $t->description = $description;
         } else {
-            if (isset(static::$tracking_sentences_default[$type])) {
-                $t->description = static::$tracking_sentences_default[$type];
+            if (isset(static::$tracking_event_names_default[$type])) {
+                $t->description = static::$tracking_event_names_default[$type];
             }
         }
         $t->save();

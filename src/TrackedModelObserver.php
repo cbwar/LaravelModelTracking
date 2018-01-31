@@ -17,7 +17,7 @@ class TrackedModelObserver
     private function addFromTrackedModel(TrackedModel $model, $type)
     {
         $user = Auth::user();
-        $title = self::getSentence($model, $type);
+        $title = self::getEventName($model, $type);
 
         $description = '';
         if ($type === 'edit' && $this->isModified($model)) {
@@ -101,23 +101,22 @@ class TrackedModelObserver
     }
 
     /**
-     * Get sentence for description.
+     * Get event name for description.
      *
      * @param TrackedModel $model
      * @param string $type
-     *
      * @return string
+     * @throws TrackableError
      */
-    private function getSentence(TrackedModel $model, $type)
+    private function getEventName(TrackedModel $model, $type)
     {
-        $sentences = array_merge(TrackedModel::$tracking_sentences_default, $model->getSentences());
+        $events = array_merge(TrackedModel::$tracking_event_names_default, $model->getEventNames());
 
-        if (!isset($sentences[$type])) {
-            throw new TrackableError('no sentence defined for type ' . $type);
+        if (!isset($events[$type])) {
+            throw new TrackableError('no event name defined for type ' . $type);
         }
 
-        $sentence = $sentences[$type];
-        return $sentence;
+        return $events[$type];
     }
 
     /**
