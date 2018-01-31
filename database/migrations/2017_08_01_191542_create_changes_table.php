@@ -17,7 +17,7 @@ class CreateChangesTable extends Migration
             $blueprint->string('ref_title', 255);
             $blueprint->integer('ref_id', false, true);
             $blueprint->integer('user_id', false, true)->nullable();
-            $blueprint->enum('type', ['add', 'edit', 'delete']);
+            $blueprint->enum('type', ['add', 'edit', 'delete', 'show', 'archive']);
             $blueprint->longText('description');
             $blueprint->timestamps();
         });

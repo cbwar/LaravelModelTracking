@@ -12,14 +12,21 @@ class TrackedModelObserver
 {
     /**
      * @param TrackedModel $model
-     * @param string       $type
+     * @param string $type
      */
     private function addFromTrackedModel(TrackedModel $model, $type)
     {
         $user = Auth::user();
-        $sentence = self::getSentence($model, $type);
+        $title = self::getSentence($model, $type);
 
-        if ($sentence) {
+        $description = '';
+        if ($type === 'edit' && $this->isModified($model)) {
+            // Show diff
+            $description .= '<div>' . $this->modelDiff($model) . '</div>';
+        }
+
+
+        if ($title) {
             $t = new Change();
             $t->ref_model = get_class($model);
             $t->ref_id = $model->id;
@@ -28,14 +35,19 @@ class TrackedModelObserver
             if ($user !== null) {
                 $t->user_id = $user->id;
             }
-            $t->description = $sentence;
+            $t->title = $title;
+            $t->description = $description;
+            if (($parent = $model->trackedParentField()) !== null) {
+                $t->parent_ref_model = get_class($parent);
+                $t->parent_ref_id = $parent->id;
+            }
             $t->save();
         }
     }
 
     /**
-     * @param array $old    Old values
-     * @param array $new    New values
+     * @param array $old Old values
+     * @param array $new New values
      * @param array $fields Tracked fields
      */
     private function modelDiff(TrackedModel $model)
@@ -46,7 +58,7 @@ class TrackedModelObserver
         $string = '';
         foreach ($old as $key => $value) {
             $new_value = $new[$key];
-            if ((string) $value !== (string) $new_value && in_array($key, $tracked, true)) {
+            if ((string)$value !== (string)$new_value && in_array($key, $tracked, true)) {
                 $column_type = Schema::getColumnType($model->getTable(), $key);
 
                 if ($column_type === 'string' || $column_type === 'text') {
@@ -92,7 +104,7 @@ class TrackedModelObserver
      * Get sentence for description.
      *
      * @param TrackedModel $model
-     * @param string       $type
+     * @param string $type
      *
      * @return string
      */
@@ -105,11 +117,6 @@ class TrackedModelObserver
         }
 
         $sentence = $sentences[$type];
-        if ($type === 'edit' && $this->isModified($model)) {
-            // Show diff
-            $sentence .= '<div>' . $this->modelDiff($model) . '</div>';
-        }
-
         return $sentence;
     }
 

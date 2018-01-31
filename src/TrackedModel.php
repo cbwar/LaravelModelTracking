@@ -48,9 +48,11 @@ abstract class TrackedModel extends Model
         });
 
         static::$tracking_sentences_default = [
-            'add'    => __('modelchanges::default.sentences.add'),
-            'edit'   => __('modelchanges::default.sentences.edit'),
+            'add' => __('modelchanges::default.sentences.add'),
+            'edit' => __('modelchanges::default.sentences.edit'),
             'delete' => __('modelchanges::default.sentences.delete'),
+            'show' => __('modelchanges::default.sentences.show'),
+            'archive' => __('modelchanges::default.sentences.archive'),
         ];
     }
 
@@ -64,11 +66,16 @@ abstract class TrackedModel extends Model
         if (!isset($this->attributes['title'])) {
             throw new TrackableError(
                 'title attribute not defined in model ' . static::class .
-                ', override trackableTitleField method.'
+                ', override trackedTitleField method.'
             );
         }
 
         return $this->attributes['title'];
+    }
+
+    public function trackedParentField()
+    {
+        return null;
     }
 
     /**
@@ -77,5 +84,34 @@ abstract class TrackedModel extends Model
     public function tracks()
     {
         return $this->morphMany(Change::class, null, 'ref_model', 'ref_id');
+    }
+
+
+    /**
+     * @param string $type
+     * @param User|null $user
+     * @param string $description
+     * @throws TrackableError
+     */
+    public function addTrack($type = 'show', $user = null, $description = '')
+    {
+        $t = new Change();
+        $t->ref_model = get_class($this);
+        $t->ref_id = $this->id;
+        $t->ref_title = $this->trackedTitleField();
+        $t->type = $type;
+        if ($user !== null) {
+            $t->user_id = $user->id;
+        }
+        $t->description = '';
+        if ($description !== '') {
+            $t->description = $description;
+        } else {
+            if (isset(static::$tracking_sentences_default[$type])) {
+                $t->description = static::$tracking_sentences_default[$type];
+            }
+        }
+        $t->save();
+        return $t;
     }
 }
